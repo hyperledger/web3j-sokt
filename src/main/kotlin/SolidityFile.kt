@@ -18,8 +18,12 @@ class SolidityFile(
         versionPragma = versionLine?.substring(versionLine.lastIndexOf("solidity") + 8)?.trim()
     }
 
-    fun getSolcInstance(): SolcInstance {
-        return SolcInstance(VersionResolver().getLatestCompatibleVersion(versionPragma).toString())
+    fun getCompilerInstance(): SolcInstance {
+        val release = VersionResolver().getLatestCompatibleVersion(versionPragma)
+        if (release != null ) {
+            return SolcInstance(release, this)
+        }
+        throw Exception("No compatible solc release could be found for the file: $sourceFile")
     }
 
 }

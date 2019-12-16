@@ -1,10 +1,14 @@
-import com.github.h0tk3y.betterParse.grammar.Grammar
 import com.github.h0tk3y.betterParse.lexer.DefaultTokenizer
 import com.github.h0tk3y.betterParse.lexer.Token
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.Headers
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.result.Result
 import com.github.zafarkhaja.semver.Version
-import java.nio.file.Files
-import java.nio.file.Paths
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.serialization.list
 
 class VersionResolver {
 
@@ -64,38 +68,22 @@ class VersionResolver {
     """.trimIndent().split("\n")
 
 
+    private fun getSolcReleases(): List<SolcRelease> {
+        val (_, _, result) = Fuel.get("https://internal.services.web3labs.com/api/solidity/versions/")
+            .header(Headers.ACCEPT, "application/json")
+            .responseString()
 
-    private val solidityReleases = """
-    0.4.12
-    0.4.13
-    0.4.14
-    0.4.15
-    0.4.16
-    0.4.17
-    0.4.18
-    0.4.19
-    0.4.20
-    0.4.21
-    0.4.22
-    0.4.23
-    0.4.24
-    0.4.25
-    0.5.0
-    0.5.1
-    0.5.2
-    0.5.3
-    0.5.4
-    0.5.5
-    0.5.6
-    0.5.7
-    0.5.8
-    0.5.9
-    0.5.10
-    0.5.11
-    0.5.12
-    0.5.13
-    0.5.14
-""".trimIndent().split("\n").map { Version.valueOf(versionsFromString(it).first()) }
+        when (result) {
+            is Result.Failure -> {
+                val ex = result.getException()
+                throw Exception("Failed to get solidity version from server", ex)
+            }
+            is Result.Success -> {
+                val json = Json(JsonConfiguration.Stable)
+                return json.parse(SolcRelease.serializer().list, result.get())
+            }
+        }
+    }
 
     private fun versionsFromString(input: String): List<String> {
         return tokenizer.tokenize(input).filter { !it.type.ignored }.fold(mutableListOf(mutableListOf<TokenMatch>()),
@@ -109,16 +97,17 @@ class VersionResolver {
             }).map { it.joinToString("") { nr -> nr.text } }
     }
 
-    fun getCompatibleVersions(pragmaRequirement: String): List<Version> {
+    fun getCompatibleVersions(pragmaRequirement: String, releases: List<SolcRelease>): List<SolcRelease> {
         val requiredVersions = versionsFromString(pragmaRequirement)
-        return solidityReleases.filter { requiredVersions.all { nr -> it.satisfies(nr) } }
+        return releases.filter { requiredVersions.all { nr -> Version.valueOf(it.version).satisfies(nr) } }
     }
 
-    fun getLatestCompatibleVersion(pragmaRequirement: String?): Version? {
+    fun getLatestCompatibleVersion(pragmaRequirement: String?): SolcRelease? {
+        val solcReleases = getSolcReleases()
         return if (pragmaRequirement != null) {
-            getCompatibleVersions(pragmaRequirement).lastOrNull()
+            getCompatibleVersions(pragmaRequirement, solcReleases).lastOrNull()
         } else {
-            solidityReleases.last()
+            solcReleases.last()
         }
     }
 }
