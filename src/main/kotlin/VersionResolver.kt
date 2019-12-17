@@ -9,6 +9,8 @@ import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
+import java.io.File
+import java.nio.file.Paths
 
 class VersionResolver {
 
@@ -72,15 +74,20 @@ class VersionResolver {
         val (_, _, result) = Fuel.get("https://internal.services.web3labs.com/api/solidity/versions/")
             .header(Headers.ACCEPT, "application/json")
             .responseString()
-
+        val versionsFile = Paths.get(System.getProperty("user.home"), ".web3j", "solc", "releases.json").toFile()
         when (result) {
             is Result.Failure -> {
+                if (versionsFile.exists()) {
+                    return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
+                }
                 val ex = result.getException()
                 throw Exception("Failed to get solidity version from server", ex)
             }
             is Result.Success -> {
-                val json = Json(JsonConfiguration.Stable)
-                return json.parse(SolcRelease.serializer().list, result.get())
+                val resultText = result.get()
+                versionsFile.parentFile.mkdirs()
+                versionsFile.writeText(resultText)
+                return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, resultText)
             }
         }
     }
