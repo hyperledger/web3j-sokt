@@ -1,7 +1,3 @@
-import java.lang.Exception
-import java.nio.file.Files
-import java.nio.file.Paths
-
 fun main(vararg params: String) {
     for (filePath in params) {
 
