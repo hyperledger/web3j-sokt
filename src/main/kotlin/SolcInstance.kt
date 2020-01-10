@@ -28,7 +28,7 @@ class SolcInstance(
             SystemUtils.IS_OS_WINDOWS -> {
                 val downloadUrl = "${solcRelease.url}${solcRelease.version}/solc_windows.zip"
                 solcFile.parentFile.mkdirs()
-                val winDownloadFile = File("${solcFile.absolutePath}.zip")
+                val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
                 Fuel.download(downloadUrl).destination { _, _ -> winDownloadFile  }.response { _, _, _ -> }.join()
                 ZipFile(winDownloadFile).use { zip ->
                     zip.entries().asSequence().forEach { entry ->
@@ -41,11 +41,8 @@ class SolcInstance(
                 }
                 return true;
             }
-            SystemUtils.IS_OS_MAC -> {
-
-            }
-            SystemUtils.IS_OS_LINUX -> {
-                val downloadUrl = "${solcRelease.url}${solcRelease.version}/solc_linux"
+            SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC -> {
+                val downloadUrl = "${solcRelease.url}${solcRelease.version}/solc${if (SystemUtils.IS_OS_MAC) "_mac" else "_linux"}"
                 solcFile.parentFile.mkdirs()
                 Fuel.download(downloadUrl).destination { _, _ -> solcFile }.response { _, _, _ -> }.join()
                 if (installed()) {
