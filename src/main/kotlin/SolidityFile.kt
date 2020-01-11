@@ -14,13 +14,14 @@ class SolidityFile(
             throw Exception("Unable to find file: $sourceFile")
         }
         fileContent = String(Files.readAllBytes(sourceFile))
-        val versionLine: String? =  fileContent.split("\n").firstOrNull { it.toLowerCase().trim().matches(Regex("^pragma.*solidity.*")) }
+        val versionLine: String? =
+            fileContent.split("\n").firstOrNull { it.toLowerCase().trim().matches(Regex("^pragma.*solidity.*")) }
         versionPragma = versionLine?.substring(versionLine.lastIndexOf("solidity") + 8)?.trim()
     }
 
     fun getCompilerInstance(): SolcInstance {
         val release = VersionResolver().getLatestCompatibleVersion(versionPragma)
-        if (release != null ) {
+        if (release != null) {
             return SolcInstance(release, this)
         }
         throw Exception("No compatible solc release could be found for the file: $sourceFile")

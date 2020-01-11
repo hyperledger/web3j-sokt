@@ -10,7 +10,12 @@ fun main(vararg params: String) {
 
         println("Resolved ${compilerInstance.solcRelease.version} for $fileName")
 
-        compilerInstance.execute()
+        compilerInstance.execute(
+            SolcArguments.OUTPUT_DIR.param { "/tmp" },
+            SolcArguments.AST,
+            SolcArguments.BIN,
+            SolcArguments.OVERWRITE
+        )
 
         println("-------------------------")
 
