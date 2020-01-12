@@ -1,15 +1,27 @@
+/*
+ * Copyright 2020 Web3 Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+package org.web3j
+
 import com.github.h0tk3y.betterParse.lexer.DefaultTokenizer
 import com.github.h0tk3y.betterParse.lexer.Token
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
-import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
-import java.io.File
 import java.nio.file.Paths
 
 class VersionResolver {
@@ -24,51 +36,6 @@ class VersionResolver {
     private val ignored = Token(null, "\\s+|;|v|(//.*)", true)
 
     private val tokenizer = DefaultTokenizer(listOf(ver, hat, til, eq, lt, gt, ng, ignored))
-
-    val testStrings =
-        """
-        >=0.5.10<0.5.14;
-        >0.4.21 <=0.6.0;
-        ^0.4.2;
-        >=0.4.21   <0.6.0;
-        >=0.4.21 <=0.6.0    ;
-           >0.4.21 <0.6.0;
-        >=0.4.21<0.6.0;
-          ^ 0.4.21  ;
-         ~ 0.4.21  ;
-        0.4.2;
-        >0.4.23 <0.5.0;
-        0.4.0;
-        v0.4.0; // like npm
-        ^0.4.0;
-        >= 0.4.0;
-        <= 0.4.0;
-        < 0.4.0;
-        > 0.4.0;
-        != 0.4.0;
-        >=0.4.0 <0.4.8; 
-        0.4;
-        v0.4;
-        ^0.4;
-        >= 0.4;
-        <= 0.4;
-        < 0.5;
-        > 0.4;
-        != 0.4;
-        >=0.4 <=0.4;
-        0;
-        v0;
-        ^0;
-        >= 0;
-        <= 0;
-        < 1;
-        > 0;
-        != 0;
-        >=0 <=1;
-        ~0.4.24;
-        ~0.4.24 >=0.5;
-    """.trimIndent().split("\n")
-
 
     private fun getSolcReleases(): List<SolcRelease> {
         val (_, _, result) = Fuel.get("https://internal.services.web3labs.com/api/solidity/versions/")
@@ -92,7 +59,7 @@ class VersionResolver {
         }
     }
 
-    private fun versionsFromString(input: String): List<String> {
+    fun versionsFromString(input: String): List<String> {
         return tokenizer.tokenize(input).filter { !it.type.ignored }.fold(mutableListOf(mutableListOf<TokenMatch>()),
             { all, ele ->
                 if (all.last().isNotEmpty() && all.last().last().type.name == "ver") {

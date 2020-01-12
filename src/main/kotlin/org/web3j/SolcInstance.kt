@@ -1,3 +1,17 @@
+/*
+ * Copyright 2020 Web3 Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+package org.web3j
+
 import com.github.kittinunf.fuel.Fuel
 import org.apache.commons.lang3.SystemUtils
 import java.io.File
@@ -41,7 +55,7 @@ class SolcInstance(
                     }
                 }
                 winDownloadFile.delete()
-                return true;
+                return true
             }
             SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC -> {
                 val downloadUrl =
@@ -49,26 +63,22 @@ class SolcInstance(
                 solcFile.parentFile.mkdirs()
                 Fuel.download(downloadUrl).destination { _, _ -> solcFile }.response { _, _, _ -> }.join()
                 if (installed()) {
-                    solcFile.setExecutable(true);
-                    return true;
+                    solcFile.setExecutable(true)
+                    return true
                 }
             }
         }
-        return false;
+        return false
     }
 
     fun execute(vararg args: SolcArguments): Int {
         if (!installed() && !install()) {
             println("Failed to install solc version")
         }
-        val command =
-            "${solcFile.absolutePath} ${args.joinToString(" ") { it.toString() }} ${sourceFiles.joinToString(" ") {
+        return "${solcFile.absolutePath} ${args.joinToString(" ") { it.toString() }} ${sourceFiles.joinToString(" ") {
                 it.sourceFile.toAbsolutePath().toString()
-            }}";
-        println(command)
-        return command.runCommand()
+            }}".runCommand()
     }
-
 
     private fun String.runCommand(): Int {
         val result = ProcessBuilder(*split(" ").toTypedArray())
