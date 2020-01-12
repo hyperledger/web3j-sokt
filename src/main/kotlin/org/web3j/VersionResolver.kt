@@ -37,7 +37,7 @@ class VersionResolver {
 
     private val tokenizer = DefaultTokenizer(listOf(ver, hat, til, eq, lt, gt, ng, ignored))
 
-    private fun getSolcReleases(): List<SolcRelease> {
+    fun getSolcReleases(): List<SolcRelease> {
         val (_, _, result) = Fuel.get("https://internal.services.web3labs.com/api/solidity/versions/")
             .header(Headers.ACCEPT, "application/json")
             .responseString()
