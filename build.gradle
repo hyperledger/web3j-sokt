@@ -57,15 +57,15 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+            "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
+            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
+            "org.junit.jupiter:junit-jupiter-params:$junitVersion"
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile group: 'com.github.zafarkhaja', name: 'java-semver', version: '0.9.0'
     compile 'com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3'
     compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0"
     compile 'com.github.kittinunf.fuel:fuel:2.2.1'
-    implementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-api:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-params:$junitVersion"
 }
 
 compileKotlin {

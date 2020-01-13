@@ -12,7 +12,14 @@
  */
 package org.web3j
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SolcRelease(val version: String, val url: String)
+data class SolcRelease(
+    val version: String,
+    val url: String,
+    @SerialName("windows_compatible") val windows: Boolean,
+    @SerialName("linux_compatible") val linux: Boolean,
+    @SerialName("mac_compatible") val mac: Boolean
+)

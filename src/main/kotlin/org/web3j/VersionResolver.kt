@@ -22,6 +22,9 @@ import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
+import org.apache.commons.lang3.SystemUtils.IS_OS_LINUX
+import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
+import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import java.nio.file.Paths
 
 class VersionResolver {
@@ -73,7 +76,11 @@ class VersionResolver {
 
     fun getCompatibleVersions(pragmaRequirement: String, releases: List<SolcRelease>): List<SolcRelease> {
         val requiredVersions = versionsFromString(pragmaRequirement)
-        return releases.filter { requiredVersions.all { nr -> Version.valueOf(it.version).satisfies(nr) } }
+        return releases.filter {
+            requiredVersions.all(fun(nr: String): Boolean {
+                return Version.valueOf(it.version).satisfies(nr) && ((it.windows && IS_OS_WINDOWS) || (it.linux && IS_OS_LINUX) || (it.mac && IS_OS_MAC))
+            })
+        }
     }
 
     fun getLatestCompatibleVersion(pragmaRequirement: String?): SolcRelease? {

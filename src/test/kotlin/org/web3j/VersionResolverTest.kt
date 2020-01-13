@@ -12,6 +12,7 @@
  */
 package org.web3j
 
+import org.apache.commons.lang3.SystemUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -160,14 +161,17 @@ class VersionResolverTest {
     @Test
     fun correctSolidityVersionFromConstraintsIsResolved() {
         val releases = resolver.getSolcReleases()
-        unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
-            val correctVersion = correctVersions[index]
-            val resolvedVersion = resolver.getCompatibleVersions(s, releases).lastOrNull()
-            if (resolvedVersion == null) {
-                assertEquals("null", correctVersion)
-            } else {
-                assertEquals(resolvedVersion.version, correctVersion)
-            }
-        })
+        // Mac will not be able to do this as we don't have solc builds for every solc version tested here
+        if (!SystemUtils.IS_OS_MAC) {
+            unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
+                val correctVersion = correctVersions[index]
+                val resolvedVersion = resolver.getCompatibleVersions(s, releases).lastOrNull()
+                if (resolvedVersion == null) {
+                    assertEquals("null", correctVersion)
+                } else {
+                    assertEquals(resolvedVersion.version, correctVersion)
+                }
+            })
+        }
     }
 }
