@@ -1,4 +1,6 @@
 #### Sokt
+[![Build Status](https://travis-ci.org/josh-richardson/sokt.svg?branch=master)](https://travis-ci.org/josh-richardson/sokt)
+
 
 Sokt is a Kotlin library and version manager for the Solidity compiler (solc). It is under active development.
 
