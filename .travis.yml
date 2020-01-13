@@ -1,2 +1,28 @@
-# todo: write travis config to test on mac, windows, linux
+os:
+  - linux
+  - osx
+  - windows
 
+language: java
+jdk:
+  - openjdk11
+sudo: false
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+install: skip
+test: skip
+jobs:
+  include:
+    - stage: build pull request
+      script: "./gradlew check jacocoTestReport"
+      if: type = pull_request
+    - stage: build master
+      script: "./gradlew check jacocoTestReport publish"
+      if: branch = master AND NOT type = pull_request
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

@@ -25,7 +25,7 @@ class SolidityCompilerTest {
     @ParameterizedTest
     @ValueSource(strings = ["Example.sol", "Flowfund.sol"])
     fun compilerCompilesSolidityFiles(solFileName: String, @TempDir tempDir: Path) {
-        val solidityToCompile = this.javaClass::class.java.getResource("/$solFileName").readText()
+        val solidityToCompile = this.javaClass.getResource("/$solFileName").readText()
         val solidityFile = Paths.get(tempDir.toAbsolutePath().toString(), solFileName).toFile()
         solidityFile.writeText(solidityToCompile)
 
