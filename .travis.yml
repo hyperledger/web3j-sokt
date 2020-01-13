@@ -1,7 +1,8 @@
+# todo write script to test windows builds, travis doesn't yet support java on Windows.
+
 os:
   - linux
   - osx
-  - windows
 
 language: java
 jdk:
