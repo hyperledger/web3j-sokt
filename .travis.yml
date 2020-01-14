@@ -22,8 +22,5 @@ jobs:
     - stage: build pull request
       script: "./gradlew check jacocoTestReport"
       if: type = pull_request
-    - stage: build master
-      script: "./gradlew check jacocoTestReport publish"
-      if: branch = master AND NOT type = pull_request
 after_success:
   - bash <(curl -s https://codecov.io/bash)
