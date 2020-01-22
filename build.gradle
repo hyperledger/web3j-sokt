@@ -47,7 +47,7 @@ apply {
 apply plugin: 'kotlinx-serialization'
 
 
-group 'org.web3j'
+group 'org.web3j.sokt'
 version '1.0-SNAPSHOT'
 
 repositories {
