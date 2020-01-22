@@ -18,8 +18,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SolcRelease(
     val version: String,
-    val url: String,
-    @SerialName("windows_compatible") val windows: Boolean,
-    @SerialName("linux_compatible") val linux: Boolean,
-    @SerialName("mac_compatible") val mac: Boolean
+    @SerialName("windows_url") val windowsUrl: String,
+    @SerialName("linux_url") val linuxUrl: String,
+    @SerialName("mac_url") val macUrl: String
 )

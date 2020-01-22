@@ -78,7 +78,7 @@ class VersionResolver {
         val requiredVersions = versionsFromString(pragmaRequirement)
         return releases.filter {
             requiredVersions.all(fun(nr: String): Boolean {
-                return Version.valueOf(it.version).satisfies(nr) && ((it.windows && IS_OS_WINDOWS) || (it.linux && IS_OS_LINUX) || (it.mac && IS_OS_MAC))
+                return Version.valueOf(it.version).satisfies(nr) && ((it.windowsUrl.isNotBlank() && IS_OS_WINDOWS) || (it.linuxUrl.isNotBlank() && IS_OS_LINUX) || (it.macUrl.isNotBlank() && IS_OS_MAC))
             })
         }
     }

@@ -40,10 +40,9 @@ class SolcInstance(
         println("Solidity version ${solcRelease.version} is not installed. Downloading and installing it to ~/.web3j/solc/${solcRelease.version}")
         when {
             SystemUtils.IS_OS_WINDOWS -> {
-                val downloadUrl = "${solcRelease.url}${solcRelease.version}/solc_windows.zip"
                 solcFile.parentFile.mkdirs()
                 val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
-                Fuel.download(downloadUrl).destination { _, _ -> winDownloadFile }.response { _, _, _ -> }.join()
+                Fuel.download(solcRelease.windowsUrl).destination { _, _ -> winDownloadFile }.response { _, _, _ -> }.join()
                 ZipFile(winDownloadFile).use { zip ->
                     zip.entries().asSequence().forEach { entry ->
                         zip.getInputStream(entry).use { input ->
@@ -58,8 +57,7 @@ class SolcInstance(
                 return true
             }
             SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC -> {
-                val downloadUrl =
-                    "${solcRelease.url}${solcRelease.version}/solc_${if (SystemUtils.IS_OS_MAC) "mac" else "linux"}"
+                val downloadUrl = if (SystemUtils.IS_OS_MAC) solcRelease.macUrl else solcRelease.linuxUrl
                 solcFile.parentFile.mkdirs()
                 Fuel.download(downloadUrl).destination { _, _ -> solcFile }.response { _, _, _ -> }.join()
                 if (installed()) {

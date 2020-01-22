@@ -167,9 +167,9 @@ class VersionResolverTest {
                 val correctVersion = correctVersions[index]
                 val resolvedVersion = resolver.getCompatibleVersions(s, releases).lastOrNull()
                 if (resolvedVersion == null) {
-                    assertEquals("null", correctVersion)
+                    assertEquals(correctVersion, "null")
                 } else {
-                    assertEquals(resolvedVersion.version, correctVersion)
+                    assertEquals(correctVersion, resolvedVersion.version)
                 }
             })
         }
