@@ -12,6 +12,7 @@
  */
 package org.web3j.sokt
 
+import com.github.zafarkhaja.semver.Version
 import org.apache.commons.lang3.SystemUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -160,7 +161,8 @@ class VersionResolverTest {
 
     @Test
     fun correctSolidityVersionFromConstraintsIsResolved() {
-        val releases = resolver.getSolcReleases()
+        // Filter is needed as test was written at 0.5.14 and new releases since this version will cause resolved version to be different from expected
+        val releases = resolver.getSolcReleases().filter { Version.valueOf(it.version).lessThan(Version.valueOf("0.5.15")) }
         // Mac will not be able to do this as we don't have solc builds for every solc version tested here
         if (!SystemUtils.IS_OS_MAC) {
             unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
