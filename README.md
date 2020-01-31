@@ -1,5 +1,5 @@
 # Sokt
-[![Build Status](https://travis-ci.org/josh-richardson/sokt.svg?branch=master)](https://travis-ci.org/josh-richardson/sokt)
+[![Build Status](https://api.travis-ci.org/web3j/web3j-sokt.svg?branch=master)](https://travis-ci.org/web3j/web3j-sokt)
 
 
 Sokt is a Kotlin wrapper for the Solidity compiler (solc). Given a solidity file, it can identify the ideal compiler version to use from the pragma statement at the top of the file. It can then download, install and invoke the compiler. Rather than using Dockerized versions of Solc, Sokt uses native builds and is compatible with Mac, Windows and Linux. This means that the only dependency is a Java installation. 
