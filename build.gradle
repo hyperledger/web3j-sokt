@@ -75,6 +75,7 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+mainClassName = 'org.web3j.sokt.MainKt'
 
 jar {
     from {
@@ -82,5 +83,8 @@ jar {
                 .collect {
                     it.isDirectory() ? it : zipTree(it)
                 }
+    }
+    manifest {
+        attributes 'Main-Class': 'org.web3j.sokt.MainKt'
     }
 }

@@ -43,7 +43,8 @@ class SolcInstance(
             SystemUtils.IS_OS_WINDOWS -> {
                 solcFile.parentFile.mkdirs()
                 val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
-                Fuel.download(solcRelease.windowsUrl).destination { _, _ -> winDownloadFile }.response { _, _, _ -> }.join()
+                Fuel.download(solcRelease.windowsUrl).destination { _, _ -> winDownloadFile }.response { _, _, _ -> }
+                    .join()
                 ZipFile(winDownloadFile).use { zip ->
                     zip.entries().asSequence().forEach { entry ->
                         zip.getInputStream(entry).use { input ->
@@ -75,13 +76,15 @@ class SolcInstance(
             println("Failed to install solc version")
         }
         return "${solcFile.absolutePath} ${args.joinToString(" ") { it.toString() }} ${sourceFiles.joinToString(" ") {
-                it.sourceFile.toAbsolutePath().toString()
-            }}".runCommand()
+            it.sourceFile.toAbsolutePath().toString()
+        }}".runCommand()
     }
 
     private fun String.runCommand(): Int {
-        val result = ProcessBuilder(*split(" ").toTypedArray())
-            .start()
+        val process = ProcessBuilder(*split(" ").toTypedArray()).redirectError(
+            ProcessBuilder.Redirect.INHERIT)
+
+        val result = process.start()
         return if (result.waitFor(30, TimeUnit.SECONDS)) {
             result.exitValue()
         } else {
