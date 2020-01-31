@@ -27,7 +27,7 @@ import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import java.nio.file.Paths
 
-class VersionResolver {
+class VersionResolver(private val directoryPath: String = ".web3j") {
 
     private val ver = Token("ver", "(\\d|\\.)+\\d*")
     private val hat = Token(null, "\\^")
@@ -44,7 +44,7 @@ class VersionResolver {
         val (_, _, result) = Fuel.get("https://internal.services.web3labs.com/api/solidity/versions/")
             .header(Headers.ACCEPT, "application/json")
             .responseString()
-        val versionsFile = Paths.get(System.getProperty("user.home"), ".web3j", "solc", "releases.json").toFile()
+        val versionsFile = Paths.get(System.getProperty("user.home"), directoryPath, "solc", "releases.json").toFile()
         when (result) {
             is Result.Failure -> {
                 if (versionsFile.exists()) {

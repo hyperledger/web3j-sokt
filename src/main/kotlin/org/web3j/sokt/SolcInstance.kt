@@ -21,12 +21,13 @@ import java.util.zip.ZipFile
 
 class SolcInstance(
     val solcRelease: SolcRelease,
+    private val directoryPath: String = ".web3j",
     private vararg val sourceFiles: SolidityFile
 ) {
     private val solcFile: File =
         Paths.get(
             System.getProperty("user.home"),
-            ".web3j",
+            directoryPath,
             "solc",
             solcRelease.version,
             if (SystemUtils.IS_OS_WINDOWS) "solc.exe" else "solc"
@@ -37,7 +38,7 @@ class SolcInstance(
     }
 
     private fun install(): Boolean {
-        println("Solidity version ${solcRelease.version} is not installed. Downloading and installing it to ~/.web3j/solc/${solcRelease.version}")
+        println("Solidity version ${solcRelease.version} is not installed. Downloading and installing it to ~/$directoryPath/solc/${solcRelease.version}")
         when {
             SystemUtils.IS_OS_WINDOWS -> {
                 solcFile.parentFile.mkdirs()
