@@ -22,9 +22,6 @@ import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
-import org.apache.commons.lang3.SystemUtils.IS_OS_LINUX
-import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
-import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import java.nio.file.Paths
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
@@ -78,7 +75,7 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
         val requiredVersions = versionsFromString(pragmaRequirement)
         return releases.filter {
             requiredVersions.all(fun(nr: String): Boolean {
-                return Version.valueOf(it.version).satisfies(nr) && ((it.windowsUrl.isNotBlank() && IS_OS_WINDOWS) || (it.linuxUrl.isNotBlank() && IS_OS_LINUX) || (it.macUrl.isNotBlank() && IS_OS_MAC))
+                return Version.valueOf(it.version).satisfies(nr) && it.isCompatibleWithOs()
             })
         }
     }

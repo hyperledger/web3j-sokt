@@ -14,6 +14,7 @@ package org.web3j.sokt
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.apache.commons.lang3.SystemUtils
 
 @Serializable
 data class SolcRelease(
@@ -21,4 +22,8 @@ data class SolcRelease(
     @SerialName("windows_url") val windowsUrl: String,
     @SerialName("linux_url") val linuxUrl: String,
     @SerialName("mac_url") val macUrl: String
-)
+) {
+    fun isCompatibleWithOs(): Boolean {
+        return windowsUrl.isNotBlank() && SystemUtils.IS_OS_WINDOWS || linuxUrl.isNotBlank() && SystemUtils.IS_OS_LINUX || macUrl.isNotBlank() && SystemUtils.IS_OS_MAC
+    }
+}

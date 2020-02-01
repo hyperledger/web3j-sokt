@@ -33,11 +33,11 @@ class SolcInstance(
             if (SystemUtils.IS_OS_WINDOWS) "solc.exe" else "solc"
         ).toFile()
 
-    private fun installed(): Boolean {
+    fun installed(): Boolean {
         return solcFile.exists()
     }
 
-    private fun install(): Boolean {
+    fun install(): Boolean {
         println("Solidity version ${solcRelease.version} is not installed. Downloading and installing it to ~/$directoryPath/solc/${solcRelease.version}")
         when {
             SystemUtils.IS_OS_WINDOWS -> {
