@@ -24,7 +24,7 @@ class SolcInstance(
     private val directoryPath: String = ".web3j",
     private vararg val sourceFiles: SolidityFile
 ) {
-    private val solcFile: File =
+    val solcFile: File =
         Paths.get(
             System.getProperty("user.home"),
             directoryPath,
@@ -69,6 +69,10 @@ class SolcInstance(
             }
         }
         return false
+    }
+
+    fun uninstall(): Boolean {
+        return solcFile.parentFile.exists() && solcFile.parentFile.deleteRecursively()
     }
 
     fun execute(vararg args: SolcArguments): Int {

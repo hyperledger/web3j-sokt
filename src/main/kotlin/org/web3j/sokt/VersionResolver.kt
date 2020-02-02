@@ -15,13 +15,15 @@ package org.web3j.sokt
 import com.github.h0tk3y.betterParse.lexer.DefaultTokenizer
 import com.github.h0tk3y.betterParse.lexer.Token
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.Headers
-import com.github.kittinunf.result.Result
 import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
+import java.lang.Exception
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse.BodyHandlers
 import java.nio.file.Paths
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
@@ -37,25 +39,28 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
 
     private val tokenizer = DefaultTokenizer(listOf(ver, hat, til, eq, lt, gt, ng, ignored))
 
+    operator fun get(uri: String): String {
+        val client = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder()
+            .uri(URI.create(uri))
+            .header("Content-Type", "application/json")
+            .build()
+        val response = client.send(request, BodyHandlers.ofString())
+        return response.body()
+    }
+
     fun getSolcReleases(): List<SolcRelease> {
-        val (_, _, result) = Fuel.get("https://internal.services.web3labs.com/api/solidity/versions/")
-            .header(Headers.ACCEPT, "application/json")
-            .responseString()
         val versionsFile = Paths.get(System.getProperty("user.home"), directoryPath, "solc", "releases.json").toFile()
-        when (result) {
-            is Result.Failure -> {
-                if (versionsFile.exists()) {
-                    return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
-                }
-                val ex = result.getException()
-                throw Exception("Failed to get solidity version from server", ex)
+        try {
+            val result = get("https://internal.services.web3labs.com/api/solidity/versions/")
+            versionsFile.parentFile.mkdirs()
+            versionsFile.writeText(result)
+            return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, result)
+        } catch (e: Exception) {
+            if (versionsFile.exists()) {
+                return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
             }
-            is Result.Success -> {
-                val resultText = result.get()
-                versionsFile.parentFile.mkdirs()
-                versionsFile.writeText(resultText)
-                return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, resultText)
-            }
+            throw Exception("Failed to get solidity version from server")
         }
     }
 
