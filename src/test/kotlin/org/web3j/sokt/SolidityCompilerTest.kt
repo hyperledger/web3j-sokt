@@ -13,6 +13,7 @@
 package org.web3j.sokt
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -36,7 +37,8 @@ class SolidityCompilerTest {
             SolcArguments.BIN,
             SolcArguments.OVERWRITE
         )
-        assertEquals(0, result)
+        assertEquals(0, result.exitCode)
+        assertNotEquals(0, result.stdOut.length + result.stdErr.length)
         assertTrue(Paths.get(tempDir.toAbsolutePath().toString(), "${solFileName.dropLast(4)}.bin").toFile().exists())
         assertTrue(Paths.get(tempDir.toAbsolutePath().toString(), "$solFileName.ast").toFile().exists())
     }

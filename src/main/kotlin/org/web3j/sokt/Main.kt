@@ -31,7 +31,9 @@ fun main(vararg params: String) {
             SolcArguments.OVERWRITE
         )
 
-        println("Solc exited with code: $result")
+        println("Solc exited with code: ${result.exitCode}")
+        println("Solc standard output:\n${result.stdOut}")
+        println("Solc standard error:\n${result.stdErr}")
 
         println("-------------------------")
     }

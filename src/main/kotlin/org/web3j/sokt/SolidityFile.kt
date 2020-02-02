@@ -33,10 +33,10 @@ class SolidityFile(
         versionPragma = versionLine?.substring(versionLine.lastIndexOf("solidity") + 8)?.trim()
     }
 
-    fun getCompilerInstance(directoryPath: String = ".web3j"): SolcInstance {
+    fun getCompilerInstance(directoryPath: String = ".web3j", redirectOutput: Boolean = false): SolcInstance {
         val release = VersionResolver(directoryPath).getLatestCompatibleVersion(versionPragma)
         if (release != null) {
-            return SolcInstance(release, directoryPath, this)
+            return SolcInstance(release, directoryPath, redirectOutput, this)
         }
         throw Exception("No compatible solc release could be found for the file: $sourceFile")
     }

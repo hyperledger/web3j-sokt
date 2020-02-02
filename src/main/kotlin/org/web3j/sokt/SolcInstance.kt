@@ -22,6 +22,7 @@ import java.util.zip.ZipFile
 class SolcInstance(
     val solcRelease: SolcRelease,
     private val directoryPath: String = ".web3j",
+    private val redirectOutput: Boolean = false,
     private vararg val sourceFiles: SolidityFile
 ) {
     val solcFile: File =
@@ -75,7 +76,7 @@ class SolcInstance(
         return solcFile.parentFile.exists() && solcFile.parentFile.deleteRecursively()
     }
 
-    fun execute(vararg args: SolcArguments): Int {
+    fun execute(vararg args: SolcArguments): SolcOutput {
         if (!installed() && !install()) {
             println("Failed to install solc version")
         }
@@ -84,15 +85,10 @@ class SolcInstance(
         }}".runCommand()
     }
 
-    private fun String.runCommand(): Int {
-        val process = ProcessBuilder(*split(" ").toTypedArray()).redirectError(
-            ProcessBuilder.Redirect.INHERIT)
+    private fun String.runCommand(): SolcOutput {
+        val process = ProcessBuilder(split("\\s".toRegex()))
+            .start().apply { waitFor(30, TimeUnit.SECONDS) }
 
-        val result = process.start()
-        return if (result.waitFor(30, TimeUnit.SECONDS)) {
-            result.exitValue()
-        } else {
-            -1
-        }
+        return SolcOutput(process.exitValue(), process.inputStream.bufferedReader().readText(), process.errorStream.bufferedReader().readText())
     }
 }
