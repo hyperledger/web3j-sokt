@@ -12,9 +12,9 @@
  */
 package org.web3j.sokt
 
-import com.github.kittinunf.fuel.Fuel
 import org.apache.commons.lang3.SystemUtils
 import java.io.File
+import java.net.URL
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipFile
@@ -44,8 +44,8 @@ class SolcInstance(
             SystemUtils.IS_OS_WINDOWS -> {
                 solcFile.parentFile.mkdirs()
                 val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
-                Fuel.download(solcRelease.windowsUrl).destination { _, _ -> winDownloadFile }.response { _, _, _ -> }
-                    .join()
+
+                winDownloadFile.writeBytes(URL(solcRelease.windowsUrl).readBytes())
                 ZipFile(winDownloadFile).use { zip ->
                     zip.entries().asSequence().forEach { entry ->
                         zip.getInputStream(entry).use { input ->
@@ -60,9 +60,9 @@ class SolcInstance(
                 return true
             }
             SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC -> {
-                val downloadUrl = if (SystemUtils.IS_OS_MAC) solcRelease.macUrl else solcRelease.linuxUrl
                 solcFile.parentFile.mkdirs()
-                Fuel.download(downloadUrl).destination { _, _ -> solcFile }.response { _, _, _ -> }.join()
+                val downloadUrl = if (SystemUtils.IS_OS_MAC) solcRelease.macUrl else solcRelease.linuxUrl
+                solcFile.writeBytes(URL(downloadUrl).readBytes())
                 if (installed()) {
                     solcFile.setExecutable(true)
                     return true
