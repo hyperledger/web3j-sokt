@@ -19,15 +19,12 @@ jobs:
   - stage: build pull request
     if: type = pull_request
     script: "./gradlew check jacocoTestReport"
-  - stage: build master
-    if: branch = master AND NOT type = pull_request
-    script: "./gradlew check jacocoTestReport publish"
   - stage: publish master
     if: branch = master AND NOT type = pull_request AND os = linux
     script: "./gradlew publish -x test"
   - stage: build release
     if: branch =~ /release/ AND os = linux
-    script: "./gradlew check publish bintrayUpload -Pversion=${TRAVIS_BRANCH#'release/'}"
+    script: "./gradlew publish bintrayUpload -Pversion=${TRAVIS_BRANCH#'release/'} -x test"
   - stage: release
     if: branch =~ /release/ AND os = linux
     script: "./gradlew closeAndReleaseRepository"
