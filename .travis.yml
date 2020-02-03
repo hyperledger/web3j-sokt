@@ -17,19 +17,22 @@ test: skip
 jobs:
   include:
   - stage: build pull request
-    script: "./gradlew check jacocoTestReport"
     if: type = pull_request
+    script: "./gradlew check jacocoTestReport"
   - stage: build master
-    script: "./gradlew check jacocoTestReport publish"
     if: branch = master AND NOT type = pull_request
+    script: "./gradlew check jacocoTestReport publish"
+  - stage: publish master
+    if: branch = master AND NOT type = pull_request AND os = linux
+    script: "./gradlew publish -x test"
   - stage: build release
-    if: branch =~ /release/
+    if: branch =~ /release/ AND os = linux
     script: "./gradlew check publish bintrayUpload -Pversion=${TRAVIS_BRANCH#'release/'}"
   - stage: release
-    if: branch =~ /release/
+    if: branch =~ /release/ AND os = linux
     script: "./gradlew closeAndReleaseRepository"
-  - stage: github release
-    if: branch =~ /release/
+  - stage: github release 
+    if: branch =~ /release/ AND os = linux
     script: "./scripts/github-release.sh"
 env:
   global:
