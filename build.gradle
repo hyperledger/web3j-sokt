@@ -19,6 +19,7 @@ plugins {
     id "de.undercouch.download" version "4.0.0"
 }
 
+description 'web3j-sokt - Kotlin-based wrapper for multiple installations of the solidity compiler (solc)'
 
 apply {
     [
