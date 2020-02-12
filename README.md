@@ -4,7 +4,14 @@
 
 Sokt is a Kotlin wrapper for the Solidity compiler (solc). Given a solidity file, it can identify the ideal compiler version to use from the pragma statement at the top of the file. It can then download, install and invoke the compiler. Rather than using Dockerized versions of Solc, Sokt uses native builds and is compatible with Mac, Windows and Linux (x86/64 only). This means that the only dependency is a Java installation. Sokt also plays nicely with GraalVM, eliminating the Java dependency if necessary. 
  
-Sokt is currently under active development and should be available as a published artefact soon.
+Sokt is currently under active development. You can use it in one of your own projects by adding the following dependency to your `build.gradle`:
+
+```groovy
+dependencies {
+    compile group: 'org.web3j', name: 'web3j-sokt', version: '0.1.0'
+}
+```
+For other build systems, see [here](https://mvnrepository.com/artifact/org.web3j/web3j-sokt/0.1.0).
 
 Example usage:
 ```kotlin
