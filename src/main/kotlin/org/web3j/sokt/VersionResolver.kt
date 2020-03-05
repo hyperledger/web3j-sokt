@@ -25,7 +25,6 @@ import java.net.URL
 import java.nio.file.Paths
 import javax.net.ssl.HttpsURLConnection
 
-
 class VersionResolver(private val directoryPath: String = ".web3j") {
 
     private val ver = Token("ver", "(\\d|\\.)+\\d*")
