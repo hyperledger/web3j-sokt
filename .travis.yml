@@ -33,7 +33,10 @@ jobs:
     if: branch =~ /release/ AND os = linux
     script: "./scripts/github-release.sh"
 before_install:
-  - openssl aes-256-cbc -K $encrypted_0468558b4508_key -iv $encrypted_0468558b4508_iv -in web3j.asc.enc -out web3j.asc -d
+- |
+  if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then
+      openssl aes-256-cbc -K $encrypted_0468558b4508_key -iv $encrypted_0468558b4508_iv -in web3j.asc.enc -out web3j.asc -d
+  fi
 env:
   global:
   - secure: mel2ZBpGZrgQzXUg7j7t2jYfEARO+Da+bejgEdGTK0bo+yKUvO9jr7OGNsGopg3A/JgVh+h8OKoN22r/cpFJ91rdqHs3T9ReBZIPcXlQVhyUA+gOgGRDq9drOWegrweWahWuPxTmSsNE4/8UrNItf+p8e9DE+89ElUKk3Q84qSEI4SJZdb9qvB4vUGbKtjkIjoGb1v1l4953Q1MZBXb5ExqWgIS+xhCjmvtvEP2F9iqTHZJAY03c5avt6al6a6/tzbn0wHx7fVFLimfTBwVyS08E3dDtUn2U04q2vNPBJ7G8gca9qM7a0cKT/1xOkqdNOJmSZmLMXYIYPjaqsavLKExTKGB0wX2/9HkvDjkXE/47jBe6Ihqq9SXU4t3MxA2gUPrFyMuonJcIvUteY9i69IEvRoWX6X4ik6QkxfYbcaMqVxJNA15pexC69Q/CrJGWkbD+fiZO4APaB30hcG2dLJ/0+ZGQ43WPx9lJWVyTTceHVlDprMj4q9lzma1/Kas1VJPgb+SI+m7Xc8jx/LwJ0ahlogSJumjUhPXAghc4i4J8TkDDguHLxQ28V5yVKCaK/qkqCdsbuw6LaXslptJ7Zu1YACnlGPeZuVYgAsF5JhgzGdUbfZUu3gGOJf76frbQFTn0k9GiVY122wgLt4tDNM17xZSODX4TOh8E7S9rAmw=
