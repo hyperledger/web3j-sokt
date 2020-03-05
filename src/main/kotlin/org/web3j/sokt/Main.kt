@@ -28,7 +28,8 @@ fun main(vararg params: String) {
             SolcArguments.OUTPUT_DIR.param { "/tmp" },
             SolcArguments.AST,
             SolcArguments.BIN,
-            SolcArguments.OVERWRITE
+            SolcArguments.OVERWRITE,
+            SolcArguments.METADATA
         )
 
         println("Solc exited with code: ${result.exitCode}")
