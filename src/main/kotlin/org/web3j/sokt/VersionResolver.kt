@@ -19,12 +19,12 @@ import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.list
-import java.lang.Exception
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse.BodyHandlers
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.URL
 import java.nio.file.Paths
+import javax.net.ssl.HttpsURLConnection
+
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
 
@@ -40,13 +40,21 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
     private val tokenizer = DefaultTokenizer(listOf(ver, hat, til, eq, lt, gt, ng, ignored))
 
     operator fun get(uri: String): String {
-        val client = HttpClient.newHttpClient()
-        val request = HttpRequest.newBuilder()
-            .uri(URI.create(uri))
-            .header("Content-Type", "application/json")
-            .build()
-        val response = client.send(request, BodyHandlers.ofString())
-        return response.body()
+        val con = URL(uri).openConnection() as HttpsURLConnection
+        con.requestMethod = "GET"
+        con.setRequestProperty("Content-Type", "application/json")
+        con.setRequestProperty("Accept", "application/json")
+        con.doOutput = true
+        val reader = BufferedReader(
+            InputStreamReader(con.inputStream)
+        )
+        var inputLine: String?
+        val response = StringBuffer()
+        while (reader.readLine().also { inputLine = it } != null) {
+            response.append(inputLine)
+        }
+        reader.close()
+        return response.toString()
     }
 
     fun getSolcReleases(): List<SolcRelease> {
