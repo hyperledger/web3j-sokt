@@ -58,7 +58,7 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
     }
 
     fun versionsFromString(input: String): List<String> {
-        return Regex("\\s*[\\^<>=\\^~!]{0,4}\\s*(\\d*(\\.?)\\s*){1,3}").findAll(input)
+        return Regex("\\s*[\\^<>=~!]{0,4}\\s*(\\d*(\\.?)\\s*){1,3}").findAll(input)
             .filter { it.groupValues[0].isNotBlank() }.map { it.groupValues[0].trim().replace("\\s".toRegex(), "") }
             .toList()
     }
