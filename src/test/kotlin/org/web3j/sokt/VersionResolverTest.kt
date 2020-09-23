@@ -110,35 +110,30 @@ class VersionResolverTest {
         """
             0.5.13
             0.5.14
-            0.4.25
+            0.4.26
             0.5.14
             0.5.14
             0.5.14
             0.5.14
-            0.4.25
-            0.4.25
+            0.4.26
+            0.4.26
             null
-            0.4.25
-            null
-            null
-            0.4.25
-            0.5.14
+            0.4.26
             null
             null
-            0.5.14
-            0.5.14
-            null
-            0.4.25
-            0.4.25
-            0.4.25
+            0.4.26
             0.5.14
             null
-            0.4.25
-            0.5.14
-            0.5.14
             null
             0.5.14
             0.5.14
+            null
+            0.4.26
+            0.4.26
+            0.4.26
+            0.5.14
+            null
+            0.4.26
             0.5.14
             0.5.14
             null
@@ -146,7 +141,12 @@ class VersionResolverTest {
             0.5.14
             0.5.14
             0.5.14
-            0.4.25
+            null
+            0.5.14
+            0.5.14
+            0.5.14
+            0.5.14
+            0.4.26
             null
         """.trimIndent().split("\n")
 
@@ -154,8 +154,9 @@ class VersionResolverTest {
 
     @Test
     fun correctVersionsFromStringsAreObtained() {
+
         unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
-            assertEquals(resolver.versionsFromString(s), correctVersionConstraints[index].split(", "))
+            assertEquals(correctVersionConstraints[index].split(", "), resolver.versionsFromString(s))
         })
     }
 

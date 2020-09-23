@@ -12,9 +12,6 @@
  */
 package org.web3j.sokt
 
-import com.github.h0tk3y.betterParse.lexer.DefaultTokenizer
-import com.github.h0tk3y.betterParse.lexer.Token
-import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.zafarkhaja.semver.Version
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -26,17 +23,6 @@ import java.nio.file.Paths
 import javax.net.ssl.HttpsURLConnection
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
-
-    private val ver = Token("ver", "(\\d|\\.)+\\d*")
-    private val hat = Token(null, "\\^")
-    private val til = Token(null, "~")
-    private val eq = Token(null, "=")
-    private val lt = Token(null, ">")
-    private val gt = Token(null, "<")
-    private val ng = Token(null, "!")
-    private val ignored = Token(null, "\\s+|;|v|(//.*)", true)
-
-    private val tokenizer = DefaultTokenizer(listOf(ver, hat, til, eq, lt, gt, ng, ignored))
 
     operator fun get(uri: String): String {
         val con = URL(uri).openConnection() as HttpsURLConnection
@@ -72,15 +58,9 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
     }
 
     fun versionsFromString(input: String): List<String> {
-        return tokenizer.tokenize(input).filter { !it.type.ignored }.fold(mutableListOf(mutableListOf<TokenMatch>()),
-            { all, ele ->
-                if (all.last().isNotEmpty() && all.last().last().type.name == "ver") {
-                    all.add(mutableListOf(ele))
-                } else {
-                    all.last().add(ele)
-                }
-                all
-            }).map { it.joinToString("") { nr -> nr.text } }
+        return Regex("\\s*[\\^<>=\\^~!]{0,4}\\s*(\\d*(\\.?)\\s*){1,3}").findAll(input)
+            .filter { it.groupValues[0].isNotBlank() }.map { it.groupValues[0].trim().replace("\\s".toRegex(), "") }
+            .toList()
     }
 
     fun getCompatibleVersions(pragmaRequirement: String, releases: List<SolcRelease>): List<SolcRelease> {
