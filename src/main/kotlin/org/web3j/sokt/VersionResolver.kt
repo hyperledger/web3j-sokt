@@ -53,10 +53,12 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
             versionsFile.writeText(result)
             return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, result)
         } catch (e: Exception) {
-            if (versionsFile.exists()) {
-                return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
+            return if (versionsFile.exists()) {
+                Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
+            } else {
+                var defaultReleases = ClassLoader.getSystemResource("releases.json").readText()
+                Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, defaultReleases)
             }
-            throw Exception("Failed to get solidity version from server")
         }
     }
 
