@@ -20,12 +20,15 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.HttpsURLConnection
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
 
     operator fun get(uri: String): String {
         val con = URL(uri).openConnection() as HttpsURLConnection
+        con.connectTimeout = TimeUnit.MILLISECONDS.toMillis(200).toInt()
+        con.readTimeout = TimeUnit.SECONDS.toMillis(1).toInt()
         con.requestMethod = "GET"
         con.setRequestProperty("Content-Type", "application/json")
         con.setRequestProperty("Accept", "application/json")
