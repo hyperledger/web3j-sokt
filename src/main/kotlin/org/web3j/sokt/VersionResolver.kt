@@ -20,12 +20,15 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.HttpsURLConnection
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
 
     operator fun get(uri: String): String {
         val con = URL(uri).openConnection() as HttpsURLConnection
+        con.connectTimeout = TimeUnit.MILLISECONDS.toMillis(200).toInt()
+        con.readTimeout = TimeUnit.SECONDS.toMillis(1).toInt()
         con.requestMethod = "GET"
         con.setRequestProperty("Content-Type", "application/json")
         con.setRequestProperty("Accept", "application/json")
@@ -45,15 +48,17 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
     fun getSolcReleases(): List<SolcRelease> {
         val versionsFile = Paths.get(System.getProperty("user.home"), directoryPath, "solc", "releases.json").toFile()
         try {
-            val result = get("https://internal.services.web3labs.com/api/solidity/versions/")
+            val result = get("https://raw.githubusercontent.com/web3j/web3j-sokt/master/src/main/resources/releases.json")
             versionsFile.parentFile.mkdirs()
             versionsFile.writeText(result)
             return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, result)
         } catch (e: Exception) {
-            if (versionsFile.exists()) {
-                return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
+            return if (versionsFile.exists()) {
+                Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
+            } else {
+                var defaultReleases = ClassLoader.getSystemResource("releases.json").readText()
+                Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, defaultReleases)
             }
-            throw Exception("Failed to get solidity version from server")
         }
     }
 
