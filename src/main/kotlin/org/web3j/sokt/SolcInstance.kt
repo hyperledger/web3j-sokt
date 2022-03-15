@@ -43,7 +43,8 @@ class SolcInstance(
         when {
             SystemUtils.IS_OS_WINDOWS -> {
                 solcFile.parentFile.mkdirs()
-                val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
+
+                val winDownloadFile = getWindowsPath()
 
                 winDownloadFile.writeBytes(URL(solcRelease.windowsUrl).readBytes())
                 ZipFile(winDownloadFile).use { zip ->
@@ -90,5 +91,13 @@ class SolcInstance(
             .start().apply { waitFor(30, TimeUnit.SECONDS) }
 
         return SolcOutput(process.exitValue(), process.inputStream.bufferedReader().readText(), process.errorStream.bufferedReader().readText())
+    }
+
+    private fun getWindowsPath(): File {
+        if (solcRelease.version.compareTo("0.7.1") > 0) {
+            return File("${solcFile.absolutePath.dropLast(4)}.exe")
+        } else {
+            return File("${solcFile.absolutePath.dropLast(4)}.zip")
+        }
     }
 }
