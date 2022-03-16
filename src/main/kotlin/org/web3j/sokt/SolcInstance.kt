@@ -98,12 +98,4 @@ class SolcInstance(
 
         return SolcOutput(process.exitValue(), process.inputStream.bufferedReader().readText(), process.errorStream.bufferedReader().readText())
     }
-
-    private fun getWindowsPath(): File {
-        if (solcRelease.version.compareTo("0.7.1") > 0) {
-            return File("${solcFile.absolutePath.dropLast(4)}.exe")
-        } else {
-            return File("${solcFile.absolutePath.dropLast(4)}.zip")
-        }
-    }
 }
