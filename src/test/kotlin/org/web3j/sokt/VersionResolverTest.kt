@@ -106,7 +106,51 @@ class VersionResolverTest {
             ~0.4.24, >=0.5
         """.trimIndent().split("\n")
 
-    private val correctVersions =
+    private val correctWindowsVersions =
+        """
+            0.5.13
+            0.5.14
+            0.4.25
+            0.5.14
+            0.5.14
+            0.5.14
+            0.5.14
+            0.4.25
+            0.4.25
+            null
+            0.4.25
+            null
+            null
+            0.4.25
+            0.5.14
+            null
+            null
+            0.5.14
+            0.5.14
+            null
+            0.4.25
+            0.4.25
+            0.4.25
+            0.5.14
+            null
+            0.4.25
+            0.5.14
+            0.5.14
+            null
+            0.5.14
+            0.5.14
+            0.5.14
+            0.5.14
+            null
+            0.5.14
+            0.5.14
+            0.5.14
+            0.5.14
+            0.4.25
+            null
+        """.trimIndent().split("\n")
+
+    private val correctLinuxVersions =
         """
             0.5.13
             0.5.14
@@ -165,16 +209,22 @@ class VersionResolverTest {
         // Filter is needed as test was written at 0.5.14 and new releases since this version will cause resolved version to be different from expected
         val releases = resolver.getSolcReleases().filter { Version.valueOf(it.version).lessThan(Version.valueOf("0.5.15")) }
         // Mac will not be able to do this as we don't have solc builds for every solc version tested here
-        if (!SystemUtils.IS_OS_MAC) {
-            unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
-                val correctVersion = correctVersions[index]
-                val resolvedVersion = resolver.getCompatibleVersions(s, releases).lastOrNull()
-                if (resolvedVersion == null) {
-                    assertEquals(correctVersion, "null")
-                } else {
-                    assertEquals(correctVersion, resolvedVersion.version)
-                }
-            })
+        if (SystemUtils.IS_OS_WINDOWS) {
+            verifyVersions(correctWindowsVersions, releases)
+        } else if (SystemUtils.IS_OS_LINUX) {
+            verifyVersions(correctLinuxVersions, releases)
         }
+    }
+
+    private fun verifyVersions(versions: List<String>, releases: List<SolcRelease>) {
+        unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
+            val correctVersion = versions[index]
+            val resolvedVersion = resolver.getCompatibleVersions(s, releases).lastOrNull()
+            if (resolvedVersion == null) {
+                assertEquals(correctVersion, "null")
+            } else {
+                assertEquals(correctVersion, resolvedVersion.version)
+            }
+        })
     }
 }
