@@ -43,20 +43,27 @@ class SolcInstance(
         when {
             SystemUtils.IS_OS_WINDOWS -> {
                 solcFile.parentFile.mkdirs()
-                val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
 
-                winDownloadFile.writeBytes(URL(solcRelease.windowsUrl).readBytes())
-                ZipFile(winDownloadFile).use { zip ->
-                    zip.entries().asSequence().forEach { entry ->
-                        zip.getInputStream(entry).use { input ->
-                            Paths.get(solcFile.parentFile.absolutePath, entry.name).toFile().outputStream()
-                                .use { output ->
-                                    input.copyTo(output)
-                                }
+                if (solcRelease.version.compareTo("0.7.1") > 0) {
+                    solcFile.writeBytes(URL(solcRelease.windowsUrl).readBytes())
+                    if (installed()) {
+                        solcFile.setExecutable(true)
+                    }
+                } else {
+                    val winDownloadFile = File("${solcFile.absolutePath.dropLast(4)}.zip")
+                    winDownloadFile.writeBytes(URL(solcRelease.windowsUrl).readBytes())
+                    ZipFile(winDownloadFile).use { zip ->
+                        zip.entries().asSequence().forEach { entry ->
+                            zip.getInputStream(entry).use { input ->
+                                Paths.get(solcFile.parentFile.absolutePath, entry.name).toFile().outputStream()
+                                    .use { output ->
+                                        input.copyTo(output)
+                                    }
+                            }
                         }
                     }
+                    winDownloadFile.delete()
                 }
-                winDownloadFile.delete()
                 return true
             }
             SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC -> {

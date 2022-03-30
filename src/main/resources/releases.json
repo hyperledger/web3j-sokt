@@ -265,109 +265,109 @@
   },
   {
     "version": "0.7.2",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.7.2/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.7.2/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.7.2/solc-static-linux"
   },
   {
     "version": "0.7.3",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.7.3/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.7.3/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.7.3/solc-static-linux"
   },
   {
     "version": "0.7.4",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.7.4/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.7.4/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.7.4/solc-static-linux"
   },
   {
     "version": "0.7.5",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.7.5/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.7.5/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.7.5/solc-static-linux"
   },
   {
     "version": "0.7.6",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.7.6/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.7.6/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.7.6/solc-static-linux"
   },
   {
     "version": "0.8.0",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.0/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.0/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.0/solc-static-linux"
   },
   {
     "version": "0.8.1",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.1/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.1/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.1/solc-static-linux"
   },
   {
     "version": "0.8.2",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.2/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.2/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.2/solc-static-linux"
   },
   {
     "version": "0.8.3",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.3/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.3/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.3/solc-static-linux"
   },
   {
     "version": "0.8.4",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.4/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.4/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.4/solc-static-linux"
   },
   {
     "version": "0.8.5",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.5/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.5/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.5/solc-static-linux"
   },
   {
     "version": "0.8.6",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.6/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.6/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.6/solc-static-linux"
   },
   {
     "version": "0.8.7",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.7/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.7/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.7/solc-static-linux"
   },
   {
     "version": "0.8.8",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.8/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.8/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.8/solc-static-linux"
   },
   {
     "version": "0.8.9",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.9/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.9/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.9/solc-static-linux"
   },
   {
     "version": "0.8.10",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.10/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.10/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.10/solc-static-linux"
   },
   {
     "version": "0.8.11",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.11/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.11/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.11/solc-static-linux"
   },
   {
     "version": "0.8.12",
-    "windows_url": "",
+    "windows_url": "https://github.com/ethereum/solidity/releases/download/v0.8.12/solc-windows.exe",
     "mac_url": "https://github.com/ethereum/solidity/releases/download/v0.8.12/solc-macos",
     "linux_url": "https://github.com/ethereum/solidity/releases/download/v0.8.12/solc-static-linux"
   }
