@@ -35,4 +35,11 @@ println("Solc standard output:\n${result.stdOut}")
 println("Solc standard error:\n${result.stdErr}")
 
 ```
+Note: For running Sokt on Linux arm64 machine, make sure these dependencies are installed:
 
+1. [CMake](https://cmake.org/download/)
+2. [Boost](https://www.boost.org/)
+3. [Git](https://git-scm.com/download)
+
+On Linux arm64 machines, Sokt downloads the source file and builds the binary since arm64 solc builds are not supported officially.
+Source: [Solc docs](https://docs.soliditylang.org/en/latest/installing-solidity.html#building-from-source)
