@@ -66,6 +66,7 @@ class SolcInstance(
                 }
                 return true
             }
+
             SystemUtils.IS_OS_LINUX && SystemUtils.OS_ARCH.startsWith("arm") -> {
                 solcFile.parentFile.mkdirs()
 
