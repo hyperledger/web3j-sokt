@@ -66,6 +66,31 @@ class SolcInstance(
                 }
                 return true
             }
+            SystemUtils.IS_OS_LINUX && SystemUtils.OS_ARCH.startsWith("arm") -> {
+                solcFile.parentFile.mkdirs()
+
+                // Download the .tar.gz file
+                val downloadUrl = solcRelease.linuxArmUrl
+                val tarFile = File("solc.tar.gz")
+                tarFile.writeBytes(URL(downloadUrl).readBytes())
+
+                // Unzip the tar file and build
+                val unzippedDir = File("solc")
+                unzippedDir.mkdir()
+                val processBuilder = ProcessBuilder("tar", "-xvzf", tarFile.absolutePath, "-C", unzippedDir.absolutePath, "&&", "cd", unzippedDir.absolutePath, "&&", "mkdir", "build", "&&", "cd", "build", "&&", "cmake", "..", "&&", "make")
+                val process = processBuilder.start()
+                process.waitFor()
+
+                // Copy the built solc file to the desired directory
+                val solcBinary = File("${unzippedDir.absolutePath}/build/solc")
+                solcBinary.copyTo(solcFile, overwrite = true)
+
+                if (installed()) {
+                    solcFile.setExecutable(true)
+                    return true
+                }
+            }
+
             SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC -> {
                 solcFile.parentFile.mkdirs()
                 val downloadUrl = if (SystemUtils.IS_OS_MAC) solcRelease.macUrl else solcRelease.linuxUrl
