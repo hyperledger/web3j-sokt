@@ -22,6 +22,7 @@ import java.net.URL
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.HttpsURLConnection
+import kotlinx.serialization.parse
 
 class VersionResolver(private val directoryPath: String = ".web3j") {
 
