@@ -13,9 +13,8 @@
 package org.web3j.sokt
 
 import com.github.zafarkhaja.semver.Version
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.list
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
@@ -51,13 +50,13 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
             val result = get("https://raw.githubusercontent.com/web3j/web3j-sokt/master/src/main/resources/releases.json")
             versionsFile.parentFile.mkdirs()
             versionsFile.writeText(result)
-            return Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, result)
+            return Json.decodeFromString<List<SolcRelease>>(result)
         } catch (e: Exception) {
             return if (versionsFile.exists()) {
-                Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, versionsFile.readText())
+                Json.decodeFromString<List<SolcRelease>>(versionsFile.readText())
             } else {
-                var defaultReleases = ClassLoader.getSystemResource("releases.json").readText()
-                Json(JsonConfiguration.Stable).parse(SolcRelease.serializer().list, defaultReleases)
+                val defaultReleases = ClassLoader.getSystemResource("releases.json").readText()
+                Json.decodeFromString<List<SolcRelease>>(defaultReleases)
             }
         }
     }
