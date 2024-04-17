@@ -1,6 +1,9 @@
 name: Release
 on:
+  push:
+    branches: [ 'release/**' ]
   workflow_dispatch:
+
 jobs:
   integration-test:
     runs-on: ubuntu-latest
