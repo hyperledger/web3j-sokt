@@ -14,7 +14,6 @@ package org.web3j.sokt
 
 fun main(vararg params: String) {
     for (filePath in params) {
-
         val fileName = filePath.substringAfterLast("/")
         println("sokt Processing $fileName")
         val solidityFile = SolidityFile(filePath)
@@ -28,7 +27,7 @@ fun main(vararg params: String) {
             SolcArguments.OUTPUT_DIR.param { "/tmp" },
             SolcArguments.BIN,
             SolcArguments.OVERWRITE,
-            SolcArguments.METADATA
+            SolcArguments.METADATA,
         )
 
         println("Solc exited with code: ${result.exitCode}")

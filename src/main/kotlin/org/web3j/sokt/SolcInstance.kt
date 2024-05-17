@@ -23,7 +23,7 @@ class SolcInstance(
     val solcRelease: SolcRelease,
     private val directoryPath: String = ".web3j",
     private val redirectOutput: Boolean = false,
-    private vararg val sourceFiles: SolidityFile
+    private vararg val sourceFiles: SolidityFile,
 ) {
     val solcFile: File =
         Paths.get(
@@ -31,7 +31,7 @@ class SolcInstance(
             directoryPath,
             "solc",
             solcRelease.version,
-            if (SystemUtils.IS_OS_WINDOWS) "solc.exe" else "solc"
+            if (SystemUtils.IS_OS_WINDOWS) "solc.exe" else "solc",
         ).toFile()
 
     fun installed(): Boolean {

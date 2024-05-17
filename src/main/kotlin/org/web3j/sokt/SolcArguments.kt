@@ -40,7 +40,8 @@ enum class SolcArguments(val baseArg: String) {
     LINK("--link"),
     METADATA_HASH("--metadata-hash"),
     ALLOW_PATHS("--allow-paths"),
-    IGNORE_MISSING("--ignore-missing");
+    IGNORE_MISSING("--ignore-missing"),
+    ;
 
     var params: (() -> String)? = null
 

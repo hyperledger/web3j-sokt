@@ -33,7 +33,7 @@ class VersionResolver(private val directoryPath: String = ".web3j") {
         con.setRequestProperty("Accept", "application/json")
         con.doOutput = true
         val reader = BufferedReader(
-            InputStreamReader(con.inputStream)
+            InputStreamReader(con.inputStream),
         )
         var inputLine: String?
         val response = StringBuffer()

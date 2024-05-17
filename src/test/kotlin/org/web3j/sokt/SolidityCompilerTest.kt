@@ -35,7 +35,7 @@ class SolidityCompilerTest {
             SolcArguments.OUTPUT_DIR.param { tempDir.toAbsolutePath().toString() },
             SolcArguments.AST,
             SolcArguments.BIN,
-            SolcArguments.OVERWRITE
+            SolcArguments.OVERWRITE,
         )
         assertEquals(0, result.exitCode)
         assertNotEquals(0, result.stdOut.length + result.stdErr.length)
