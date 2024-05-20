@@ -54,23 +54,17 @@ spotless {
 
 tasks.named('spotlessJava') {
     dependsOn downloadJavaLicense, downloadFormatterProperties
-    mustRunAfter tasks.named('compileJava')
-    mustRunAfter tasks.named('spotlessGroovyGradle')
-    dependsOn tasks.named('compileTestKotlin')
-    dependsOn tasks.named('processResources')
-    dependsOn tasks.named('processTestResources')
+    dependsOn tasks.named('compileJava'), tasks.named('compileTestJava'), tasks.named('processResources'), tasks.named('processTestResources')
+    mustRunAfter tasks.named('spotlessGroovyGradle'), tasks.named('test'), tasks.named('jacocoTestReport')
 }
 
 tasks.named('spotlessKotlin') {
     dependsOn downloadJavaLicense, downloadFormatterProperties
-    mustRunAfter tasks.named('compileJava')
-    mustRunAfter tasks.named('spotlessGroovyGradle')
-    dependsOn tasks.named('spotlessJava')
+    dependsOn tasks.named('compileJava'), tasks.named('compileTestJava'), tasks.named('processResources'), tasks.named('processTestResources'), tasks.named('spotlessJava')
+    mustRunAfter tasks.named('spotlessGroovyGradle'), tasks.named('test'), tasks.named('jacocoTestReport')
 }
 
 tasks.named('spotlessCheck') {
-    dependsOn downloadJavaLicense, downloadFormatterProperties
-    dependsOn tasks.named('spotlessJava')
-    dependsOn tasks.named('spotlessKotlin')
-    dependsOn tasks.named('spotlessGroovyGradle')
+    dependsOn downloadJavaLicense, downloadFormatterProperties, tasks.named('spotlessJava'), tasks.named('spotlessKotlin'), tasks.named('spotlessGroovyGradle')
+    mustRunAfter tasks.named('jacocoTestReport'), tasks.named('test')
 }
