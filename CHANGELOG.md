@@ -3,7 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.2.5]() (Upcoming)
+# [0.4.0]() (Upcoming)
+
+### Bug Fixes
+
+* NIL
+
+### Features
+
+* 
+
+### BREAKING CHANGES
+
+* Updated Gradle to 8.7 [#30](https://github.com/hyperledger/web3j-sokt/pull/30)
+
+# [0.3.0](https://github.com/hyperledger/web3j-sokt/releases/tag/v0.3.0) (2024-04-17)
 
 ### Bug Fixes
 

@@ -21,7 +21,7 @@ data class SolcRelease(
     val version: String,
     @SerialName("windows_url") val windowsUrl: String = "",
     @SerialName("linux_url") val linuxUrl: String = "",
-    @SerialName("mac_url") val macUrl: String = ""
+    @SerialName("mac_url") val macUrl: String = "",
 ) {
     fun isCompatibleWithOs(): Boolean {
         return windowsUrl.isNotBlank() && SystemUtils.IS_OS_WINDOWS || linuxUrl.isNotBlank() && SystemUtils.IS_OS_LINUX || macUrl.isNotBlank() && SystemUtils.IS_OS_MAC

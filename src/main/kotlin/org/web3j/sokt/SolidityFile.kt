@@ -17,7 +17,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 class SolidityFile(
-    sourceFileString: String
+    sourceFileString: String,
 ) {
     val sourceFile: Path = Paths.get(sourceFileString)
     val fileContent: String
@@ -29,7 +29,7 @@ class SolidityFile(
         }
         fileContent = String(Files.readAllBytes(sourceFile))
         val versionLine: String? =
-            fileContent.split("\n").firstOrNull { it.toLowerCase().trim().matches(Regex("^pragma.*solidity.*")) }
+            fileContent.split("\n").firstOrNull { it.lowercase().trim().matches(Regex("^pragma.*solidity.*")) }
         versionPragma = versionLine?.substring(versionLine.lastIndexOf("solidity") + 8)?.trim()
     }
 

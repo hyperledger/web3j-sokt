@@ -60,7 +60,7 @@ class VersionResolverTest {
             >=0 <=1;
             ~0.4.24;
             ~0.4.24 >=0.5;
-    """.trimIndent().split("\n")
+        """.trimIndent().split("\n")
 
     private val correctVersionConstraints =
         """
@@ -198,7 +198,6 @@ class VersionResolverTest {
 
     @Test
     fun correctVersionsFromStringsAreObtained() {
-
         unsanitizedStrings.forEachIndexed(fun(index: Int, s: String) {
             assertEquals(correctVersionConstraints[index].split(", "), resolver.versionsFromString(s))
         })
