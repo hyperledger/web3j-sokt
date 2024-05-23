@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* 
+* Added solidity version 0.8.26 [#31](https://github.com/hyperledger/web3j-sokt/pull/31)
 
 ### BREAKING CHANGES
 
