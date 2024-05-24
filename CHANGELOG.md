@@ -3,7 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.4.0]() (Upcoming)
+# [0.4.1]() (Upcoming)
+
+### Bug Fixes
+
+* NIL
+
+### Features
+
+* Bump snapshot version to 0.4.1 [#32](https://github.com/hyperledger/web3j-sokt/pull/32)
+
+### BREAKING CHANGES
+
+*
+
+# [0.4.0](https://github.com/hyperledger/web3j-sokt/releases/tag/v0.4.0) (2024-05-23)
 
 ### Bug Fixes
 
